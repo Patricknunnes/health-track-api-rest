@@ -10,6 +10,9 @@ public class Picture {
 
     private String uriPicture;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Profile profile;
+
 
     public Picture(String uriPicture) {
         this.uriPicture = uriPicture;

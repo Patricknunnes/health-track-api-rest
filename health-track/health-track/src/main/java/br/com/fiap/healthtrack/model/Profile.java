@@ -16,6 +16,12 @@ public class Profile {
 
     private String uriProfileImg;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private User user;
+
+    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Picture> pictures = new ArrayList<>();
+
     public Profile(String name, String biograph, String uriProfileImg) {
         this.name = name;
         this.biograph = biograph;
