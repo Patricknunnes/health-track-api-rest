@@ -13,9 +13,6 @@ public class User {
 
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Profile profile;
-
     public User(String email, String password) {
         this.email = email;
         this.password = password;

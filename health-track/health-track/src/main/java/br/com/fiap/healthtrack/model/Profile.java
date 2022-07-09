@@ -3,6 +3,7 @@ package br.com.fiap.healthtrack.model;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Profile {
@@ -19,16 +20,23 @@ public class Profile {
     @OneToOne(cascade = CascadeType.ALL)
     private User user;
 
-    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Picture> pictures = new ArrayList<>();
-
-    public Profile(String name, String biograph, String uriProfileImg) {
+    public Profile(String name, String biograph, String uriProfileImg, User user) {
         this.name = name;
         this.biograph = biograph;
         this.uriProfileImg = uriProfileImg;
+        this.user = user;
+
     }
 
     public Profile() {
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getName() {

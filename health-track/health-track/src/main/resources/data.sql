@@ -1,7 +1,5 @@
-INSERT INTO user(email, password) VALUES ('pikerox140@g', '1234');
-INSERT INTO user(email, password) VALUES ('expertgamer@g', '4321');
+insert into user(email, password) values ('pikerox140@gmail.com', '1234');
+insert into user(email, password) values ('expertgamer@gmail.com', '4321');
 
-INSERT INTO profile(biograph, name, uri_profile_img) VALUES ('19y', 'Patrick', 'perfil2');
-INSERT INTO profile(biograph, name, uri_profile_img) VALUES ('20y', 'Patrick', 'perfil1');
-
-INSERT INTO picture(uri_picture) VALUES ('img_naruto');
+insert into profile(biograph, name, uri_profile_img, user_id) values ('24y Dev', 'Patrick', 'perfil.html', 0);
+insert into profile(biograph, name, uri_profile_img, user_id) values ('20y Gamer', 'Caio', 'perfil2.html', 1);
