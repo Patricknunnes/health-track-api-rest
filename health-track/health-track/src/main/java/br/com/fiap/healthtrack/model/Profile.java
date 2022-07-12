@@ -20,12 +20,10 @@ public class Profile {
     @OneToOne(cascade = CascadeType.ALL)
     private User user;
 
-    public Profile(String name, String biograph, String uriProfileImg, User user) {
+    public Profile(String name, String biograph, String uriProfileImg) {
         this.name = name;
         this.biograph = biograph;
         this.uriProfileImg = uriProfileImg;
-        this.user = user;
-
     }
 
     public Profile() {
