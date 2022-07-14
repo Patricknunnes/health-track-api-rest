@@ -6,6 +6,7 @@ import br.com.fiap.healthtrack.controller.form.UpdateProfileForm;
 import br.com.fiap.healthtrack.model.Profile;
 import br.com.fiap.healthtrack.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,6 +47,7 @@ public class ProfileController {
 
     @PostMapping
     @Transactional
+    @CacheEvict(value = "profilesList", allEntries = true)
     public ResponseEntity<ProfileDto> createProfile(@RequestBody @Valid ProfileForm profileForm,
                                                     UriComponentsBuilder uriComponentsBuilder){
         Profile profile = profileForm.conversor();
@@ -69,6 +71,7 @@ public class ProfileController {
 
     @PutMapping("/{id}")
     @Transactional
+    @CacheEvict(value = "profilesList", allEntries = true)
     public ResponseEntity<ProfileDto> update(@PathVariable Long id,
                                              @RequestBody @Valid UpdateProfileForm updateProfileForm){
 
@@ -86,6 +89,7 @@ public class ProfileController {
 
     @DeleteMapping("/{id}")
     @Transactional
+    @CacheEvict(value = "profilesList", allEntries = true)
     public ResponseEntity remove(@PathVariable Long id){
 
         Optional<Profile> profile = profileRepository.findById(id);
