@@ -6,6 +6,12 @@ import br.com.fiap.healthtrack.controller.form.UpdateProfileForm;
 import br.com.fiap.healthtrack.model.Profile;
 import br.com.fiap.healthtrack.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -24,19 +30,24 @@ public class ProfileController {
     private ProfileRepository profileRepository;
 
     @GetMapping
-    public List<ProfileDto> profiles(String name){
+    @Cacheable(value = "profilesList")
+    public Page<ProfileDto> profiles(@RequestParam(required = false) String name,
+                                     @PageableDefault(page = 0, size = 10,
+                                             sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+
         if (name != null) {
-            List<Profile> profiles = profileRepository.findByName(name);
+            Page<Profile> profiles = profileRepository.findByName(name, pageable);
             return ProfileDto.conversor(profiles);
         } else {
-            List<Profile> profiles = profileRepository.findAll();
+            Page<Profile> profiles = profileRepository.findAll(pageable);
             return ProfileDto.conversor(profiles);
         }
     }
 
     @PostMapping
     @Transactional
-    public ResponseEntity<ProfileDto> createProfile(@RequestBody @Valid ProfileForm profileForm, UriComponentsBuilder uriComponentsBuilder){
+    public ResponseEntity<ProfileDto> createProfile(@RequestBody @Valid ProfileForm profileForm,
+                                                    UriComponentsBuilder uriComponentsBuilder){
         Profile profile = profileForm.conversor();
         profileRepository.save(profile);
 
@@ -58,18 +69,32 @@ public class ProfileController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<ProfileDto> update(@PathVariable Long id, @RequestBody @Valid UpdateProfileForm updateProfileForm){
-        Profile profile = updateProfileForm.update(id, profileRepository);
+    public ResponseEntity<ProfileDto> update(@PathVariable Long id,
+                                             @RequestBody @Valid UpdateProfileForm updateProfileForm){
 
-        return ResponseEntity.ok(new ProfileDto(profile));
+        Optional<Profile> optionalProfile = profileRepository.findById(id);
+
+        if (optionalProfile.isPresent()){
+            Profile profile = updateProfileForm.update(id, profileRepository);
+            return ResponseEntity.ok(new ProfileDto(profile));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity remove(@PathVariable Long id){
 
-        profileRepository.deleteById(id);
+        Optional<Profile> profile = profileRepository.findById(id);
 
-        return ResponseEntity.ok().build();
+        if (profile.isPresent()) {
+            profileRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

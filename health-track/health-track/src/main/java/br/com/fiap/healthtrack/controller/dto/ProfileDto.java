@@ -1,6 +1,7 @@
 package br.com.fiap.healthtrack.controller.dto;
 
 import br.com.fiap.healthtrack.model.Profile;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,8 +21,8 @@ public class ProfileDto {
     }
 
 
-    public static List<ProfileDto> conversor(List<Profile> profiles) {
-        return profiles.stream().map(ProfileDto::new).collect(Collectors.toList());
+    public static Page<ProfileDto> conversor(Page<Profile> profiles) {
+        return profiles.map(ProfileDto::new);
     }
 
     public long getId() {
