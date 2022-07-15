@@ -8,6 +8,7 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 @SpringBootApplication
 @EnableSpringDataWebSupport
 @EnableCaching
+//@EnableSwagger2
 public class HealthTrackApplication {
 
 	public static void main(String[] args) {
