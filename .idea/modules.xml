@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/health-track/health-track/health-track.iml" filepath="$PROJECT_DIR$/health-track/health-track/health-track.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/health-track-api-rest.iml" filepath="$PROJECT_DIR$/.idea/health-track-api-rest.iml" />
+    </modules>
+  </component>
+</project>
